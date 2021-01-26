@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#7289DA">
+    <meta name="og:title" content="Discord Bots" />
+    <link rel="icon" href="https://bots.land/assets/img/dark-logopng.png" type="image/x-icon">
+    <meta name="og:url" content="https://bots.land" />
+    <meta name="og:description" content="In Discord, you can find every bot you are looking for, every bot of the tag you are looking for, and add them to your server.">
+    <meta name="og:image" content="https://bots.land/assets/img/logopng.webp" />
+    <meta name="description" content="In Discord, you can find every bot you are looking for, every bot of the tag you are looking for, and add them to your server.">
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:title" content="Discord Bots">
+    <meta name="twitter:description" content="In Discord, you can find every bot you are looking for, every bot of the tag you are looking for, and add them to your server.">
+    <meta name="twitter:image" content="https://bots.land/assets/img/logopng.webp">
+    <script data-ad-client="ca-pub-1221385808761999" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://bots.land/"
+    }
+    </script>
+    <link rel="stylesheet" id="theme" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" id="theme" href="/assets/css/switch.css?v=1">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+    <!--<script src="https://www.google.com/recaptcha/api.js" async defer></script>-->
+    <script src="/assets/js/main.min.js?v=1"></script>
+    <script src="/assets/js/scripts.js?v=1"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0T66DR6Q70"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0T66DR6Q70');
+    </script>
+    <title><%= title %></title>
+</head>
+<body>
+    <div class="bg-dark pt-4">
+      <nav class="navbar bg-dark pb-4" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="ml-4 navLogo" href="/">
+            <img draggable="false" id="headerLogo" src="/assets/img/logopng.webp" alt="Discord Bots | Discord Bot List" width="65" height="65">
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu bg-dark">
+          <div class="navbar-start">
+            <a href="/" class="navbar-item menuItem">
+            <i class="fad fa-home"></i>&nbsp;Home
+            </a>
+            <a href="/bots" class="navbar-item menuItem">
+            <i class="fad fa-robot"></i>&nbsp;Bots
+            </a>
+            <a href="/tags" class="navbar-item menuItem">
+            <i class="fad fa-tags"></i>&nbsp;Tags
+            </a>
+            <a href="/partners" class="navbar-item menuItem">
+            <i class="fad fa-stars"></i>&nbsp;Partners
+            </a>
+            <a href="/discord" class="navbar-item menuItem" target="_blank">
+            <i class="fab fa-discord"></i>&nbsp;Discord 
+            </a>
+            <a href="/team-members" class="navbar-item menuItem">
+            <i class="fad fa-users"></i>&nbsp;Our Team 
+            </a>
+          
+    
+          </div>
+      
+          <div class="navbar-end mt-1 ">
+            <% if (!user) { %>
+            <a href="/auth/login" class="navbar-item menuItem mr-5">
+             <i class="fab fa-discord"></i>&nbsp;Login with Discord
+            </a>
+            <% } else { %>
+              <div class="navbar-item z has-dropdown is-hoverable loginOkNavItem" style="margin-top: -10px;">
+                <a class="menuItem navUser z navbar-link">
+                  <img draggable="false" src="https://cdn.discordapp.com/avatars/<%=user.id%>/<%= user.avatar %>?size=2048" class="mr-2" style="width: 30px; border-radius: 50%;">
+                  <%= user.username %>#<%= user.discriminator %>
+                </a>
+                <div class="navbar-dropdown" style="z-index: 99999999999999999999999999999999999999999999999999 !important;">
+                  <a href="/user/<%=user.id%>" class="navbar-item">
+                    <i class="fad fa-user mr-2"></i>&nbsp;Profile
+                  </a>
+                  <a href="/bots/submit" class="navbar-item">
+                    <i class="fad fa-paper-plane mr-2"></i>&nbsp;Submit Bot
+                  </a>
+                  <!-- <a href="#" class="navbar-item">
+                    <i class="fa fa-ad mr-2"></i> Ad Panel
+                  </a> -->
+                  <%if (bot.guilds.cache.get("785468934844973056").members.cache.get(req.user.id)){
+                    if (bot.guilds.cache.get("785468934844973056").members.cache.get(req.user.id).roles.cache.get("794265637312397342")){
+                  %>
+                  <a href="/admin" class="navbar-item">
+                    <i class="fa fa-user-crown mr-2"></i>&nbsp;Admin Panel
+                  </a>
+                  <%
+                    }
+                  }%>
+                  <hr class="navbar-divider">
+                  <a href="/auth/logout" class="navbar-item">
+                    <i class="fad fa-sign-out-alt mr-2"></i>&nbsp;Logout
+                  </a>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </nav>
+</div>
+<script src="https://bots.land/socket.io/socket.io.min.js"></script>
+<script>
+  var socket = io();
+</script>

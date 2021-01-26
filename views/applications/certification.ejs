@@ -1,0 +1,105 @@
+<%- include("../static/header.ejs"); %>
+<br>
+<div class="container mt-5 pt-5">
+    <p class="has-text-white title is-large"><i class="fad fa-badge-check has-text-info"></i> Certification Application</p>
+    <p class="content has-text-white" style="margin-top: -20px;">One last step left to get your bot certified! Apply now.</p>
+    <div class="hr mb-5"></div>
+    <article class="message is-success" id="statusTrue" style="display: none;">
+        <div class="message-body">
+            <h3><b><i class="fa fa-check-circle" aria-hidden="true"></i> Great!</b></h3>
+            Thank you, your application has been received. We will review it as soon as possible!
+        </div>
+    </article>
+    <article class="message is-danger" id="statusFalse" style="display: none;">
+        <div class="message-body">
+            <h3><b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> An error occured!</b></h3>
+            <div class="statusMessage"></div>
+        </div>
+    </article>
+    <br>
+        <div class="columns is-multiline">
+            <div class="column  is-4">
+                <b class="is-size-6">Bot:</b>
+                <br>
+                <select class="form-input mt-3" id="bot">
+                    <option disabled selected><%= bdata.username; %>#<%= bdata.discriminator; %> (<%= bdata.id; %>)</option>
+                </select>
+            </div>
+            <div class="column  is-4">
+                <b class="is-size-6">How many servers is your bot currently in?</b>
+                <br>
+                <input type="number" class="form-input mt-3" min="100" id="servers" placeholder="Enter how many servers your bot is in. Min: 100 servers. ">
+            </div>
+            <div class="column  is-4">
+                <b class="is-size-6">Do you own all of the code in your bot?</b>
+                <br>
+                <select class="form-input mt-3" id="codes">
+                    <option disabled selected>Select</option>
+                    <option value="1">Yes.</option>
+                    <option value="0">No.</option>
+                </select>
+            </div>
+            <div class="column is-4">
+                <b class="is-size-6">Please indicate if your bot has English support.</b>
+                <br>
+                <select class="form-input mt-3" id="english_support">
+                    <option disabled selected>Select</option>
+                    <option value="1">Yes.</option>
+                    <option value="0">No.</option>
+                </select>
+            </div>
+            <div class="column is-4">
+                <b class="is-size-6">Does your bot have a support server?</b>
+                <br>
+                <select class="form-input mt-3" id="support_server">
+                    <option disabled selected>Select</option>
+                    <option value="1">Yes.</option>
+                    <option value="0">No.</option>
+                </select>
+            </div>
+            <div class="column is-4">
+                <b class="is-size-6">Does your bot have a website?</b>
+                <br>
+                <select class="form-input mt-3" id="website">
+                    <option disabled selected>Select</option>
+                    <option value="1">Yes.</option>
+                    <option value="0">No.</option>
+                </select>
+            </div>
+            <div class="column is-12">
+                <b class="is-size-6">Tell us a little bit about your bot.</b>
+                <br>
+                <textarea class="form-input mt-3" id="description" cols="30" rows="8" placeholder="Here you can write a little bit about your bot, <%= bdata.username; %>#<%= bdata.discriminator; %>."></textarea>
+            </div>
+            <div class="column">
+                <button type="button" onclick="submit()" class="button is-info"><i class="mr-2 fa fa-paper-plane"></i> Submit</button>
+            </div>
+        </div>
+    <div class="mt-5 pt-5"></div>
+    <div class="mt-5 pt-5"></div>
+</div>
+
+<script>
+    function submit() {
+    $.ajax({
+        type: "POST",
+        url: "/applications/certification?id=<%= data.id %>",
+        data: {description: $("#description").val(), website: $("#website").val(), support_server: $("support_server").val(), english_support: $("#english_support").val(), codes: $("#codes").val(), servers: $("#servers").val()},
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("#statusTrue").show();
+                $("#statusFalse").hide();
+            } else {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("#statusTrue").hide();
+                $("#statusFalse").show();
+                $(".statusMessage").html("» " + response.message);
+            }
+        }
+    });
+    }
+</script>
+
+<%- include("../static/footer.ejs"); %>

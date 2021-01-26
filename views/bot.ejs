@@ -1,0 +1,148 @@
+<meta name="og:title" content="<%= getbotdata.username; %>" />
+<meta name="og:url" content="https://bots.land/bot/<%= getbotdata.id; %>" />
+<meta name="og:image" content="<%= "https://cdn.discordapp.com/avatars/" + getbotdata.id + "/" + getbotdata.avatar; %>" />
+
+<%- include("static/header.ejs"); %>
+<%
+db.set(`bots.${data.id}.username`, getbotdata.username);
+db.set(`bots.${data.id}.avatar`, getbotdata.avatar);
+db.set(`bots.${data.id}.discriminator`, getbotdata.discriminator);
+%>  
+<style>
+    h1 {
+        font-size: 25px;
+    }
+    h2 {
+        font-size: 23px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+</style>
+<div class="container px-3 px-3 mt-5 pt-5 page-content">
+    <div class="columns container px-3 is-multiline">
+        <div class="column is-2">
+            <img draggable="false" onerror="imgError(this);" alt="<%= getbotdata.id %> Bot" src="https://cdn.discordapp.com/avatars/<%= data.id %>/<%= getbotdata.avatar %>" class="botLogo" style="width: 300px; border-radius: 6px;">
+        </div>
+        <div class="column is-8">
+            <p class="BotName is-size-2 has-text-white"><%= getbotdata.username %> <%if (badge){%><span data-tippy-content="Certified" class="tippy has-text-info" style="font-size: 28px;"><i data-tippy-content="Certified" class="tippy fad fa-badge-check"></i></span><%}%></p>
+            <p class="BotDesc mt-1"><%= data.shortDescription.replaceAll("<script", "<-script").replace("</script", "<-/script>"); %></p>                                         
+            <% if (user) { if (data.owner == user.id || data.owners.includes(`${user.id}`)) { %> 
+                <a href="/bot/<%= data.id %>/edit" class="mt-4 button is-success"><i class="fa fa-edit mr-2"></i> Edit</a>    
+                <a href="/bot/<%= data.id %>/stats" class="mt-4 button is-danger"><i class="fa fa-chart-line mr-2"></i> Stats</a>    
+                <%if (!badge) {%><a href="/applications/certification?id=<%= data.id %>" class="mt-4 button is-info"><i class="fa fa-badge-check mr-2"></i> Certification</a><%}%>    
+            <% } } %>
+        </div>
+        <div class="is-2 mt-5 column">
+            <button onclick="window.open('/bot/<%= data.id %>/invite'); " class="botPageBtn z w-100 is-clickable mt-4" style="width:100%;"><i class="fad fa-user-plus"></i> Add to Server</button>
+            <button onclick="location.href = '/bot/<%= data.id %>/vote'; " class="botPageBtn z w-100 is-clickable mt-2" style="width:100%;"><i class="fad fa-thumbs-up"></i> Vote</button>
+        </div>
+    </div>
+    <div class="hr mb-5"></div>
+    <div class="columns is-multiline">
+        <div class="column is-3 sidebar">
+            <b class="has-text-white"><i class="fad fa-question-circle"></i> Information</b>
+            <div class="is-flex mt-4">
+                <div class="box-2-p"><i class="mt-1 fad fa-terminal"></i></div>
+                <p class="box-2">Prefix: <%= data.prefix %> </p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="mt-1 fad fa-vote-yea"></i></div>
+                <p class="box-2">Total Votes: <%= data.votes %></p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="mt-1 fad fa-link"></i></div>
+                <p class="box-2">Total Invites: <%= data.invites %></p>
+            </div>
+            <br>
+            <b class="has-text-white"><i class="fad fa-tags"></i> Tags</b>
+            <br>
+            
+            <div class="mt-4 mb-2">
+
+                <%
+                for (let i = 0; i < data.tags.split(",").length; i++) {
+                %>
+                <a class="mb-1" href="/tag/<%= data.tags.split(",")[i] %>">
+                    <span class="tag botTags mb-1"><%= data.tags.split(",")[i] %></span>
+                </a>
+                <% } %>
+            </div>
+
+            <br>
+            <b class="has-text-white"><i class="fad fa-user-crown"></i> Owners</b>
+
+
+            
+
+            <a href="/user/<%= getOwner.id %>">
+                <div class="is-flex mt-4">
+                    <div class="ownerImg" style="background: url(https://cdn.discordapp.com/avatars/<%= getOwner.id %>/<%= getOwner.avatar %>) center center no-repeat; background-size: 100%;"></div>
+                    <p class="box-2"><%= getOwner.username %>#<%= getOwner.discriminator %></p>
+                </div>
+            </a>
+
+            <%
+            if (data.owners) {
+                for (let i = 0; i < owners.length; i++) {
+                let getDiscordUser = owners[i];
+                if (!getDiscordUser)return;
+            %>
+            <a href="/user/<%= getDiscordUser.id %>">
+                <div class="is-flex mt-4">
+                <div class="ownerImg" style="background: url(https://cdn.discordapp.com/avatars/<%= getDiscordUser.id %>/<%= getDiscordUser.avatar %>) center center no-repeat; background-size: 100%;"></div>
+                <p class="box-2"><%= getDiscordUser.tag %></p>
+                </div>
+            </a>
+                <%
+              }
+            }
+            %>
+
+            <br>
+            <b class="has-text-white"><i class="fad fa-link"></i> Links</b>
+            <br>
+            
+            <% if (data.website) { %>
+                <a class="mt-3" rel="nofollow noreferer" target="_blank" href="<%= data.website %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix" style="background: #19b54b;"><span class="fa fa-globe is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn" style="background: #3bd96d;"><span>Website</span></div></p></div>
+                </a>
+            <% } %>
+
+            <% if (data.supportServer) { %>
+                <a class="mt-3" href="<%= data.supportServer %>" target="_blank">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p supportbtn-prefix" style="background: #365eb5;"><span class="fab fa-discord is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 supportbtn" style="background: #4d71bf;"><span>Support Server</span></div></p></div>
+                </a>
+            <% } %>
+
+            <a href="/bot/<%= data.id %>/report">
+                <div class="field has-addons mt-3"><p class="control"><div class="box-2-p reportbtn-prefix" style="background: rgb(199, 59, 59);"><span class="fa fa-exclamation-circle is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 reportbtn" style="background: rgb(223, 68, 68);"><span>Report</span></div></p></div>
+            </a>
+
+        </div>
+        <div class="column is-9 detailed-description-column">
+            <%if (data.status == 0 ) {%>
+            <article class="message is-danger" id="errors">
+                <div class="message-body">
+                    <h3><b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Your bot is hidden!</b></h3>
+                    You are seeing this message because your bot has not been reviewed and approved by our Moderators yet. If you see this message, only bot owners can enter the bot's page.
+                </div>
+            </article>
+            <div class="hr mb-5"></div>
+            <% } %>
+            
+            <div class="box detailedDesc" style="overflow: hidden; border-radius: 5px !important;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $.ajax({
+        type: "POST",
+        url: "/bot/<%= data.id %>/description?markdown=true",
+        data: {markdown: true},
+        success: function (response) {
+            $(".detailedDesc").html(response);
+        }
+    });
+</script>
+<%- include("static/footer.ejs"); %>

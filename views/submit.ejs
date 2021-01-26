@@ -1,0 +1,160 @@
+<%- include("static/header.ejs"); %>
+<div class="px-10 mt-5 pt-5">
+    <p class="has-text-white title is-large"><i class="fad fa-plus-square has-text-success"></i> Add your Bot.</p>
+    <p class="content has-text-white" style="margin-top: -20px;">Would you vote to list your bot? Fill in the form below!</p>
+    <div class="hr mb-5"></div>
+
+    <article class="message is-danger" id="errors" style="display:none;">
+        <div class="message-body">
+          <h3><b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> You should fix the following problems!</b></h3>
+          <div id="errorDetails"></div>
+        </div>
+    </article>
+    <article class="message is-success" id="trueMessage" style="display:none;">
+        <div class="message-body">
+          <h3><b><i class="fa fa-check-circle" aria-hidden="true"></i> Great!</b></h3>
+          Your bot has been successfully added to our website. Please wait, you are redirecting...
+        </div>
+    </article>
+    <div class="columns is-multiline">
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-fingerprint"></i> Bot ID <span class="has-text-danger">*</span></b>
+                <p class="has-text-white" style="opacity: 0.6;">Enter your bot client ID.</p>
+            </div>
+            <input autocomplete="off" type="text" id="id" class="mt-3 form-input" placeholder="Client ID (Example: 112233445566778899)">
+        </div>
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-terminal"></i> Prefix <span class="has-text-danger">*</span></b>
+                <p class="has-text-white" style="opacity: 0.6;">Enter your bot prefix.</p>
+            </div>
+            <input autocomplete="off" type="text" id="prefix" class="mt-3 form-input" placeholder="Prefix (Example: !)">
+        </div>
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-tags"></i> Tags <span class="has-text-danger">*</span></b>
+                <p class="has-text-white" style="opacity: 0.6;">Select tags of your bots.</p>
+            </div>
+            <div id="tags" class="form-input mt-3" style="position:relative;">
+            <select class="-mb-5 tagsSelect">
+                <option value="Moderation">Moderation</option>
+                <option value="Music">Music</option>
+                <option value="Game">Game</option>
+                <option value="Utility">Utility</option>
+                <option value="Economy">Economy</option>
+                <option value="NSFW">NSFW</option>
+                <option value="Fun">Fun</option>
+                <option value="Meme">Meme</option>
+                <option value="Turkish">Turkish</option>
+                <option value="Invite">Invite Systems</option>
+                <option value="Autorole">Autorole</option>
+                <option value="Minecraft">Minecraft</option>
+                <option value="Fortnite">Fortnite</option>
+                <option value="Emojis">Emojis</option>
+            </select>
+                <input autocomplete="off" type="hidden" id="tagss" value=""/>
+            </div>
+        </div>
+        
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-link"></i> Invite Link</b>
+                <p class="has-text-white" style="opacity: 0.6;">Invite link of your bot.</p>
+            </div>
+            <input autocomplete="off" type="text" id="inviteLink" class="mt-3 form-input" placeholder="Invite Link">
+        </div>
+
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-user-crown"></i> CO-Owners</b>
+                <p class="has-text-white" style="opacity: 0.6;">Other owners of your bot.</p>
+            </div>
+            <input autocomplete="off" type="text" id="owners" class="mt-3 form-input" placeholder="Other owners of your bot. (Example: 1234556789,123456789)">
+        </div>
+        
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fad fa-globe"></i> Website</b>
+                <p class="has-text-white" style="opacity: 0.6;">Personal Website url of your bot.</p>
+            </div>
+            <input autocomplete="off" type="text" id="website" class="mt-3 form-input" placeholder="Personal Website url of your bot.">
+        </div>
+
+        <div class="mb-3 column is-4">
+            <div>
+                <b class="has-text-white"><i class="fab fa-discord"></i> Support Server</b>
+                <p class="has-text-white" style="opacity: 0.6;">Support Server of your bot.</p>
+            </div>
+            <input autocomplete="off" type="text" id="supportServer" class="mt-3 form-input" placeholder="Support Server. (Example: https://discord.gg/abcdefg)">
+        </div>
+
+        <div class="column is-8">
+            <div>
+                <b class="has-text-white"><i class="fa fa-comment"></i> Short Description <span class="has-text-danger">*</span></b>
+                <p class="has-text-white" style="opacity: 0.6;">Short description of your bot.</p>
+            </div>
+            <input autocomplete="off" type="text" id="shortDescription" class="mt-3 form-input" placeholder="Bla bla bla... (Min 30 characters, Max: 200 characters)">
+        </div>
+
+        <div class="column is-12">
+            <div>
+                <b class="has-text-white"><i class="fa fa-comment"></i> Detailed Description <span class="has-text-danger">*</span></b>
+                <p class="has-text-white" style="opacity: 0.6;">Detailed description of your bot. (Markdown Allowed)</p>
+            </div>
+            <br>
+            <textarea id="detailedDescription" class="mt-3 form-input" rows="8"></textarea>
+        </div>
+
+    </div>
+
+    <br>
+
+    <button class="button is-success mr-2 is-medium" type="button" id="submit"><i class="fad fa-paper-plane"></i>&nbsp;Submit</button>
+   
+</div>
+
+<script>
+    var editor = CodeMirror.fromTextArea($('#detailedDescription')[0], {
+        mode: 'markdown',
+        htmlMode: true,
+        lineNumbers: true,
+        theme: 'ayu-mirage'
+    });
+
+    editor.setSize(null,"400px")
+    
+    $("#submit").click(function (e) {
+        var data = {id:$("#id").val(), prefix: $("#prefix").val(), tags: $("#tagss").val(), inviteLink: $("#inviteLink").val(), owners: $("#owners").val(), website: $("#website").val(), supportServer: $("#supportServer").val(), shortDescription: $("#shortDescription").val(), detailedDescription: editor.getValue()}
+        $.ajax({
+            type: "POST",
+            url: "/bots/submit",
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                console.log(response)
+                if (response.isError == true) {
+                    var message = "";
+                    Object.values(response).forEach(data => {
+                        if (data != true) {
+                            message += "» " + data + "<br>";  
+                        }
+                    });  
+                    $("#trueMessage").hide();
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("#errors").show();
+                    $("#errorDetails").html(message);
+                } else {
+                    $("#errors").hide();
+                    $("#errorDetails").html("");
+                    $("#trueMessage").show();
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    setTimeout(() => {
+                        window.location.href = "/bot/" + $("#id").val();
+                    }, 2500);
+                }
+            }
+        });        
+    });
+</script>
+<%- include("static/footer.ejs"); %>

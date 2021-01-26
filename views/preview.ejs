@@ -1,0 +1,125 @@
+<%- include("static/header.ejs"); %>
+<style>
+    h1 {
+        font-size: 25px;
+    }
+    h2 {
+        font-size: 23px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+</style>
+<div class="container px-3 px-3 mt-5 pt-5 page-content">
+    <div class="columns container px-3 is-multiline">
+        <div class="column is-2">
+            <img draggable="false" onerror="imgError(this);" alt="<%= getbotdata.id %> Bot" src="https://cdn.discordapp.com/avatars/<%= data.id %>/<%= getbotdata.avatar %>" class="botLogo" style="width: 300px; border-radius: 6px;">
+        </div>
+        <div class="column is-8">
+            <p class="BotName is-size-2 has-text-white"><%= getbotdata.username %> <% if (bot.guilds.cache.get("785468934844973056").members.cache.get(getbotdata.id)) { if (bot.guilds.cache.get("785468934844973056").members.cache.get(getbotdata.id).roles.cache.get("794266963282886686")) {%><span data-tippy-content="Certified"class="tippy has-text-info" style="font-size: 28px;"><i class="fad fa-badge-check"></i></span><%}}%></p>   
+            <p class="BotDesc mt-1"><%= data.shortDescription.replaceAll("<script", "<-script").replace("</script", "<-/script>"); %></p>
+        </div>
+        <div class="is-2 mt-5 column">
+            <button class="botPageBtn z w-100 is-clickable mt-4" style="width:100%;"><i class="fa fa-user-plus"></i> Add to Server</button>
+            <button class="botPageBtn z w-100 is-clickable mt-2" style="width:100%;"><i class="fa fa-thumbs-up"></i> Vote</button>
+        </div>
+    </div>
+    <div class="hr mb-5"></div>
+    <div class="columns is-multiline">
+        <div class="column is-3 sidebar">
+            <b class="has-text-white"><i class="fa fa-question-circle"></i> Information</b>
+            <div class="is-flex mt-4">
+                <div class="box-2-p"><i class="fa fa-terminal"></i></div>
+                <p class="box-2">Prefix: 0</p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="fa fa-chevron-up"></i></div>
+                <p class="box-2">Total Votes: 0</p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="fa fa-link"></i></div>
+                <p class="box-2">Invites: 0</p>
+            </div>
+            <br>
+            <b class="has-text-white"><i class="fa fa-tags"></i> Tags</b>
+            <br>
+            
+            <div class="mt-4 mb-2">
+
+                <%
+                for (let i = 0; i < data.tags.split(",").length; i++) {
+                %>
+                <a class="mb-1" href="/tag/<%= data.tags.split(",")[i] %>">
+                    <span class="tag botTags mb-1"><%= data.tags.split(",")[i] %></span>
+                </a>
+                <% } %>
+            </div>
+
+            <br>
+            <b class="has-text-white"><i class="fa fa-user-crown"></i> Owners</b>
+
+
+            
+
+            <a href="/user/<%= getOwner.id %>">
+                <div class="is-flex mt-4">
+                    <div class="ownerImg" style="background: url(https://cdn.discordapp.com/avatars/<%= getOwner.id %>/<%= getOwner.avatar %>) center center no-repeat; background-size: 100%;"></div>
+                    <p class="box-2"><%= getOwner.username %>#<%= getOwner.discriminator %></p>
+                </div>
+            </a>
+
+            <%
+            if (data.owners) {
+                for (let i = 0; i < owners.length; i++) {
+                let getDiscordUser = owners[i];
+                if (!getDiscordUser)return;
+            %>
+            <a href="/user/<%= getDiscordUser.id %>">
+                <div class="is-flex mt-4">
+                <div class="ownerImg" style="background: url(https://cdn.discordapp.com/avatars/<%= getDiscordUser.id %>/<%= getDiscordUser.avatar %>) center center no-repeat; background-size: 100%;"></div>
+                <p class="box-2"><%= getDiscordUser.tag %></p>
+                </div>
+            </a>
+                <%
+              }
+            }
+            %>
+
+            <br>
+            <b class="has-text-white"><i class="fa fa-link"></i> Links</b>
+            <br>
+            
+            <% if (data.website) { %>
+                <a class="mt-3" href="<%= data.website %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix" style="background: #19b54b;"><span class="fa fa-globe is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn" style="background: #3bd96d;"><span>Website</span></div></p></div>
+                </a>
+            <% } %>
+
+            <% if (data.supportServer) { %>
+                <a class="mt-3" href="<%= data.supportServer %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p supportbtn-prefix" style="background: #365eb5;"><span class="fab fa-discord is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 supportbtn" style="background: #4d71bf;"><span>Support Server</span></div></p></div>
+                </a>
+            <% } %>
+
+            <a href="/bot/<%= data.id %>/report">
+                <div class="field has-addons mt-3"><p class="control"><div class="box-2-p reportbtn-prefix" style="background: rgb(199, 59, 59);"><span class="fa fa-exclamation-circle is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 reportbtn" style="background: rgb(223, 68, 68);"><span>Report</span></div></p></div>
+            </a>
+
+        </div>
+        <div class="column is-9 detailed-description-column">            
+            <div class="box detailedDesc" style="color:white; overflow: hidden; border-radius: 5px !important;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $.ajax({
+        type: "POST",
+        url: "/bot/<%= data.id %>/description?preview=true",
+        data: {markdown: true},
+        success: function (response) {
+            $(".detailedDesc").html(response);
+        }
+    });
+    $("a").attr("href", "#!");
+</script>
+<%- include("static/footer.ejs"); %>

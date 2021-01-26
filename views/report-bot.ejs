@@ -1,0 +1,67 @@
+<%- include("static/header.ejs"); %>
+<br>
+<div class="container px-3 px-3 mt-5 pt-5">
+    <p class="has-text-white title is-large"><i class="fad fa-bell has-text-danger"></i> Report</p>
+    <p class="content has-text-white" style="margin-top: -20px;">You can report a bot to us. Our moderators are eager to help you in the best way possible!</p>
+    <div class="hr mb-5"></div>
+    <article class="message is-success" id="statusTrue" style="display: none;">
+        <div class="message-body">
+            <h3><b><i class="fa fa-check-circle" aria-hidden="true"></i> Great!</b></h3>
+            Your message has been sent to our team. We thank you. We will inform you when it reaches the result.
+        <br>
+        </div>
+    </article>
+    <article class="message is-danger" id="statusFalse" style="display: none;">
+        <div class="message-body">
+            <h3><b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> An error occured!</b></h3>
+            <div class="statusMessage"></div>
+        </div>
+    </article>
+        <div class="has-text-white mt-5">
+                <div style="width: 25%;">
+                    <b class="is-size-5">Reason:</b>
+                    <br>
+                    <select class="mt-3 form-input" id="reason">
+                        <option value="This bot has a below average uptime.">This bot has a below average uptime.</option>
+                        <option value="This bot has some NSFW commands that work outside of NSFW marked channels.">This bot has some NSFW commands that work outside of NSFW marked channels.</option>
+                        <option value="This bot has harmed my server.">This bot has harmed my server.</option>
+                        <option value="This bot abused Discord ToS.">This bot abused Discord ToS.</option>
+                        <option value="This bot has abused the Discord API.">This bot has abused the Discord API.</option>
+                        <option value="Other. (Please enter the information you wish to tell us about a specific bot below.)">Other. (Please enter the information you wish to tell us about a specific bot below.)</option>
+                    </select>
+                </div>
+                <div class="is-12 mt-5">
+                    <b class="is-size-5">Message:</b>
+                    <textarea class="form-input mt-3" id="message" placeholder="Your message, report details... i.e The bot <%= bdata.username %>#<%= bdata.discriminator %> has some inappropriate language in one of its commands. The command is: <%= bdata.prefix %>help." cols="30" rows="6"></textarea>
+                    <button onclick="submitReport();" class="button is-danger mt-5 mb-5" type="button"><i class="fad fa-paper-plane mr-2"></i> Submit</button>
+                    <br><br>
+                    <br>
+                </div>
+        </div>
+    <div class="mt-5 pt-5"></div>
+</div>
+
+<script>
+    function submitReport() {
+    $.ajax({
+        type: "POST",
+        url: "/api/submit-report?id=<%= data.id %>",
+        data: {reason: $("#reason").val(), message: $("#message").val(), recaptcha: $("textarea#g-recaptcha-response").val()},
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("#statusTrue").show();
+                $("#statusFalse").hide();
+            } else {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("#statusTrue").hide();
+                $("#statusFalse").show();
+                $(".statusMessage").html("» " + response.message);
+            }
+        }
+    });
+    }
+</script>
+
+<%- include("static/footer.ejs"); %>

@@ -1,0 +1,542 @@
+<%- include("static/header.ejs"); %>
+<%
+//Week
+let votesData = db.get(`stats.${botData.id}.votes`) || [];
+let weekDays = new Array()
+    for(let i = 6; i <= 6; i--) {
+      if (i == 0) break;
+      let data = {
+        day: moment(Date.now() - (ms("1d") * i)).format("dddd"),
+        number: moment(Date.now() - (ms("1d") * i)).format("DD")
+      }
+      weekDays.push(data)
+    }
+    let dayData = {
+        day: moment(Date.now()).format("dddd"),
+        number: +moment(Date.now() ).format("DD")
+    }
+    weekDays.push(dayData);
+      
+    let weekDay = new Array();
+    for (let i = 0; i < weekDays.length; i++) {
+        weekDay.push(" '" + weekDays[i].day + "' ");
+    }
+   let weekVoteData = new Array();
+   for (let i = 0; i < weekDays.length; i++) {
+    weekVoteData.push(votesData.filter(d => moment(d.date).format("DD") == Number(weekDays[i].number)).length);
+   }
+
+   
+
+%>
+
+<%
+//Month
+let monthDays = new Array()
+    for(let i = 29; i <= 29; i--) {
+      if (i == 0) break;
+      let data = {
+        day: moment(Date.now() - (ms("1d") * i)).format("dddd"),
+        number: moment(Date.now() - (ms("1d") * i)).format("DD"),
+        month: moment(Date.now() - (ms("1d") * i)).format("MM"),
+        year: moment(Date.now() - (ms("1d") * i)).format("YYYY")
+      }
+      monthDays.push(data)
+    }
+    let dayData1 = {
+        day: moment(Date.now()).format("dddd"),
+        number: +moment(Date.now() ).format("DD"),
+        month: moment(Date.now()).format("MM"),
+        year: moment(Date.now()).format("YYYY")
+    }
+    monthDays.push(dayData1);
+      
+    let monthDay = new Array();
+    for (let i = 0; i < monthDays.length; i++) {
+        monthDay.push(" '" + monthDays[i].number + "/" + monthDays[i].month + "/"+ monthDays[i].year + "' ");
+    }
+
+    let monthVoteData = new Array()
+
+    for (let i = 0; i < monthDays.length; i++) {
+        monthVoteData.push(votesData.filter(d => moment(d.date).format("DD") == Number(monthDays[i].number)).length);
+    }
+
+%>
+
+<%
+//Week
+let invitesData = db.get(`stats.${botData.id}.invites`) || [];
+let weekDays_Invites = new Array()
+    for(let i = 6; i <= 6; i--) {
+      if (i == 0) break;
+      let data = {
+        day: moment(Date.now() - (ms("1d") * i)).format("dddd"),
+        number: moment(Date.now() - (ms("1d") * i)).format("DD")
+      }
+      weekDays_Invites.push(data)
+    }
+    let dayData5 = {
+        day: moment(Date.now()).format("dddd"),
+        number: +moment(Date.now() ).format("DD")
+    }
+    weekDays_Invites.push(dayData5);
+      
+    let weekDay_Invites = new Array();
+    for (let i = 0; i < weekDays_Invites.length; i++) {
+        weekDay_Invites.push(" '" + weekDays_Invites[i].day + "' ");
+    }
+   let weekInviteData = new Array();
+   for (let i = 0; i < weekDays.length; i++) {
+    weekInviteData.push(invitesData.filter(d => moment(d.date).format("DD") == Number(weekDays_Invites[i].number)).length);
+   }
+
+   
+
+%>
+
+<%
+//Month
+let Invites_monthDays = new Array()
+    for(let i = 29; i <= 29; i--) {
+      if (i == 0) break;
+      let data11 = {
+        day: moment(Date.now() - (ms("1d") * i)).format("dddd"),
+        number: moment(Date.now() - (ms("1d") * i)).format("DD"),
+        month: moment(Date.now() - (ms("1d") * i)).format("MM"),
+        year: moment(Date.now() - (ms("1d") * i)).format("YYYY")
+      }
+      Invites_monthDays.push(data11)
+    }
+    let dayData4 = {
+        day: moment(Date.now()).format("dddd"),
+        number: +moment(Date.now() ).format("DD"),
+        month: moment(Date.now()).format("MM"),
+        year: moment(Date.now()).format("YYYY")
+    }
+    Invites_monthDays.push(dayData4);
+      
+    let Invites_monthDay = new Array();
+    for (let i = 0; i < Invites_monthDays.length; i++) {
+        Invites_monthDay.push(" '" + Invites_monthDays[i].number + "/" + Invites_monthDays[i].month + "/"+ Invites_monthDays[i].year + "' ");
+    }
+
+    let monthInviteData = new Array()
+
+    for (let i = 0; i < Invites_monthDays.length; i++) {
+        monthInviteData.push(invitesData.filter(d => moment(d.date).format("DD") == Number(Invites_monthDays[i].number)).length);
+    }
+%>
+
+<%
+
+let referingData = [];
+
+for(let i = 0; i < (db.get(`stats.${botData.id}.referringUrls`) || []).length; i++) {
+    let refdata = db.get(`stats.${botData.id}.referringUrls`) || [];
+    let size = db.get(`stats.${botData.id}.visitors`) || [];
+    let refData = {
+        url: refdata[i],
+        size: size.filter(d => d.referringUrl == refdata[i]).length
+    }
+
+    referingData.push(refData);
+}
+referingData = referingData.sort(function (a,b) { return b.size - a.size })
+
+
+let urls = [];
+let sizes = []
+
+for(let i = 0; i < referingData.length; i++) {
+    if (i == 5) break;
+    urls.push(" '" + referingData[i].url.replace("undefined", "Unknown") + "' ")
+    sizes.push(referingData[i].size)
+}
+%>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+<div class="container mt-5 pt-5">
+    <p class="has-text-white title is-large"><i class="fad fa-chart-line has-text-success"></i> Stats.</p>
+    <p class="content has-text-white" style="margin-top: -20px;">Watch your bot's progress here!</p>
+    <div class="hr mb-5"></div>
+
+    <div class="columns">
+        <div class="column">
+            <div class="box bg-dark has-text-white">
+                <b class="is-size-4"><i class="fa fa-chevron-up"></i> Total Votes </b>
+                <p><%= botData.votes %></p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box bg-dark has-text-white">
+                <b class="is-size-4"><i class="fa fa-user-plus"></i> Total Invites </b>
+                <p><%= botData.invites %></p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box bg-dark has-text-white">
+                <b class="is-size-4"><i class="fa fa-eye"></i> Unique Visitors </b>
+                <p><%= uniquevisitors %></p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box bg-dark has-text-white">
+                <b class="is-size-4"><i class="fa fa-dollar-sign"></i> Earning </b>
+                <p>$<%= botData.earning %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt pt-5"></div>
+
+    <b class="has-text-white is-size-3"><i class="fa fa-chevron-up"></i> Votes</b>
+    <p class="has-text-white"> You can see the number of votes your bot has as Week and Month.</p>
+    <br>
+    <div class="columns">
+        <div class="column is-6">
+            <canvas id="votesWeek"></canvas>
+        </div>
+        <div class="column is-6">
+            <canvas id="votesMonth"></canvas>
+        </div>
+    </div>
+
+    <b class="has-text-white is-size-3"><i class="fa fa-user-plus"></i> Invites</b>
+    <p class="has-text-white"> You can see the number of invites your bot has as Week and Month.</p>
+    <br>
+    <div class="columns">
+        <div class="column is-6">
+            <canvas id="invitesWeek"></canvas>
+        </div>
+        <div class="column is-6">
+            <canvas id="invitesMonth"></canvas>
+        </div>
+    </div>
+    
+    <b class="has-text-white is-size-3"><i class="fa fa-mouse-pointer"></i> Referring Url's</b>
+    <p class="has-text-white"> You can see where users entered your bot's page from.</p>
+    <br>
+    
+    <div class="columns">
+        <div class="column">
+            <table class="table is-dark table-dark bg-dark has-text-white is-fullwidth">
+                <thead>
+                  <tr>
+                    <th class="has-text-white">#</th>
+                    <th class="has-text-white">Link</th>
+                    <th class="has-text-white">Total Redirect's</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <%for(let i = 0; i < referingData.length; i++) {%>
+                  <tr>
+                    <td>#<%=i+1%></td>
+                    <td><%=referingData[i].url.replace("undefined", "Unknown")%></td>
+                    <td><%=referingData[i].size%></td>
+                  </tr>
+                    <%}%>
+                </tbody>
+              </table>
+        </div>
+        <div class="column">
+            <canvas id="referringUrls"></canvas>
+        </div>
+    </div>
+    
+    <script>
+
+var ctx = document.getElementById('referringUrls');
+    var referringUrls = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [<%-urls%>],
+            datasets: [{
+                label: 'Referring URL\'s',
+                data: [<%-sizes%>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ]
+            }]
+        }
+    });
+
+
+
+    var ctx = document.getElementById('votesWeek');
+    var votesWeek = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<%-weekDay%>],
+            datasets: [{
+                label: 'Vote Counts (Week)',
+                data: [<%-weekVoteData%>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var ctx = document.getElementById('votesMonth');
+    var votesMonth = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<%-monthDay%>],
+            datasets: [{
+                label: 'Vote Counts (Month)',
+                data: [<%-monthVoteData%>],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+
+
+    var ctx = document.getElementById('invitesWeek');
+    var invitesWeek = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<%-weekDay_Invites%>],
+            datasets: [{
+                label: 'Invites (Week)',
+                data: [<%-weekInviteData%>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var ctx = document.getElementById('invitesMonth');
+    var invitesMonth = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<%-Invites_monthDay%>],
+            datasets: [{
+                label: 'Invites (Month)',
+                data: [<%-monthInviteData%>],
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    
+    </script>
+    
+</div>
+<%- include("static/footer.ejs"); %>

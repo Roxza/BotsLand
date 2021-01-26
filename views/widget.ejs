@@ -1,0 +1,62 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+    .widget-box {
+        width: 330px;
+        border-radius: 8px;
+        background: #080b10;
+        padding: 15px;
+        color: #ffffff;
+        font-family: 'Cabin', sans-serif;
+    }
+    .widget-botimg {
+        width: 100px;
+        border-radius: 8px;
+    }
+    .white {
+        color: white !important;
+    }
+    .flex {
+        display: flex;
+    }
+    .content {
+        margin-left: 10px;
+    }
+    .badge {
+        align-items: center;
+        background-color: #192333;
+        border-radius: 4px;
+        color: #fff;
+        display: inline-flex;
+        font-size: .75rem;
+        height: 2em;
+        width: 86px;
+        justify-content: center;
+        line-height: 1.5;
+        margin-right: 10px;
+        padding-left: .75em;
+        padding-right: .75em;
+        white-space: nowrap;
+    }
+    a {color:#7389da; text-decoration: none;}
+</style>
+<div class="widget-box" style="cursor: pointer;" onclick="window.open('https://bots.land/bot/<%=botData.id%>')">
+    <div class="flex">
+        <img src="https://cdn.discordapp.com/avatars/<%=botData.id%>/<%= botData.avatar %>.webp?size=256" alt="" class="widget-botimg">
+        <div class="content">
+            <h2 class="white">
+                <%= botData.username %> <%if(data.status == 2){%> <img title="Certified Bot" class="verifiedBadge" src="https://i.imgur.com/ysVWXYB.png" width="20px"> <%}%><span style="color: teal;">●</span>
+            </h2>
+            <div class="flex" style="margin-top: -10px;">
+                <div class="badge">
+                    Votes: <%= data.votes%>
+                </div>
+                <div class="badge">
+                    Invites: <%= data.invites %>
+                </div>
+            </div>
+            <div class="badge white" style="width: 202px !important; margin-top: 10px;">
+                Owner: <a style="margin-left: 4px;" href="https://bots.land/user/<%=owner.id%>"><%=owner.username%>#<%=owner.discriminator%></a>
+            </div>
+        </div>
+    </div>
+</div>

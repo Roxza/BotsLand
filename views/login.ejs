@@ -1,0 +1,49 @@
+<%- include("static/header.ejs"); %>
+    <div class="container px-3 mt-5">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+        <div class="columns mx-auto" style="justify-content: center;">
+            <div class="column is-7 mx-auto">
+                <div class="mx-auto box bg-dark has-text-centered mt-5 mb-5">
+                    <h1 class="has-text-centered has-text-white is-size-4"><i class="fa fa-sign-in-alt mr-2"></i>Login into Bots.land</h1>
+                    <div class="hr mt-5 mb-5"></div>
+                    <a id="loginLink" class="button is-info mx-auto mt-5" href="/login?joinServer=true"><i class="fab fa-discord mr-2"></i>Login with Discord</a>
+                    <br />
+                    <a id="fastlogin" class="button is-info mx-auto mt-5" href="https://discord.com/oauth2/authorize?response_type=code&redirect_uri=https%3A%2F%2Fbots.land%2Fauth%2Fcallback&scope=identify%20guilds.join&client_id=778960224001589309&prompt=none"><i class="fad fa-fast-forward mr-2"></i>Fast login with Discord</a>
+                    <br />
+                    <div class="field mt-5 mb-5">
+                        <input id="joinServer" type="checkbox" name="joinServer" class="switch is-rounded is-success" checked="checked">
+                        <label for="joinServer" class="has-text-white">Join our Discord Server.</label>
+                      </div>
+                </div>
+            </div>
+        </div>     
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    </div>
+    <script>
+        $("#joinServer").change(function (e) { 
+            if ($("#joinServer").is(":checked")) {
+                $("#loginLink").attr("href", "/login?joinServer=true");
+            } else {
+                $("#loginLink").attr("href", "/login?joinServer=false");
+            }    
+        });
+        $("#joinServer").change(function (e) { 
+            if ($("#joinServer").is(":checked")) {
+                $("#fastlogin").attr("href", "https://discord.com/oauth2/authorize?response_type=code&redirect_uri=https%3A%2F%2Fbots.land%2Fauth%2Fcallback&scope=identify%20guilds.join&client_id=778960224001589309&prompt=none");
+            } else {
+                $("#fastlogin").attr("href", "https://discord.com/oauth2/authorize?response_type=code&redirect_uri=https%3A%2F%2Fbots.land%2Fauth%2Fcallback&scope=identify%20&client_id=778960224001589309&prompt=none");
+            }    
+        });
+    </script>
+    <%- include("static/footer.ejs"); %>

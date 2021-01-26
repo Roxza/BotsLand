@@ -1,0 +1,68 @@
+<%- include("../static/header.ejs"); %>
+<script>
+    setInterval(() => {
+        if (Cookies.get("theme") == "light") {
+            Cookies.set("theme","dark");
+            window.location.reload();
+        }
+    }, 10);
+</script>
+<style>
+    .navbar {position: fixed !important; width: 100%; top: 0; padding-top: 10px;}
+    .panel {position: fixed !important; width: 300px; top: 0;}
+</style>
+    <div class="columns mb-0">
+        <div class="column mb-0 is-3 has-text-white">
+            <nav class="docsSidebar panel is-dark" style="margin-top: 86px; border-radius: 0%;">
+                <p class="panel-heading has-text-centered" style="border-radius: 0%;">
+                  Documentations
+                </p>
+                <a href="/docs" class="panel-block has-text-white panel-block-dark" style="border-radius: 0%;">
+                  <i class="fa fa-chevron-right mr-2" style="font-size: 1.3vh;"></i> Home
+                </a>
+                <p style="font-weight: 600;" class="ml-3 mt-2">BOT PAGE</p>
+                <a href="/docs/bot-page/css-classes" class="panel-block has-text-white panel-block-dark" style="border-radius: 0%;">
+                    <i class="fa fa-chevron-right mr-2" style="font-size: 1.3vh;"></i> CSS Classes
+                </a>
+                <a href="/docs/bot-page/examples"  class="panel-block has-text-white panel-block-dark" style="border-radius: 0%;">
+                    <i class="fa fa-chevron-right mr-2" style="font-size: 1.3vh;"></i> Examples
+                </a>
+                <p style="font-weight: 600;" class="ml-3 mt-2">API v1.0</p>
+                <a href="/docs/api-v1/bots"  class="panel-block has-text-white panel-block-dark" style="border-radius: 0%;">
+                    <i class="fa fa-chevron-right mr-2" style="font-size: 1.3vh;"></i> Bots
+                </a>
+                <a href="/docs/api-v1/vote-control" class="panel-block has-text-white panel-block-dark" style="border-radius: 0%;">
+                    <i class="fa fa-chevron-right mr-2" style="font-size: 1.3vh;"></i> Vote Control
+                </a>
+            </nav>
+        </div>
+        <div class="column mb-0 is-9 p-5">
+            <br>
+            <br>
+            <br>
+            <br>
+            <h1 class="is-size-2 has-text-white">Introduction</h1>
+            <p style="opacity: 0.7;">This documentation is about bot's page editing and BotsLand API.</p>
+            <br>
+            <br>
+            <h1 class="is-size-2 has-text-white">If You Need More Help</h1>
+            <p style="opacity: 0.7;">You can come to our <a href="https://discord.gg/HWkG5DwsmK">discord server</a> and ask your question to our wonderful moderators.</p>
+            <div style="margin-top: 300px;">
+                <button onclick="window.location.href='/docs/bot-page/css-classes';" class="docsNextBtn">
+                    <span style="opacity: 0.6;">
+                        Next:
+                    </span>
+                    <br>
+                    <span class="docsNextBtnContent">
+                        Bot Page - Style Classes
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $("#br").remove();
+        $(".footer").remove();
+    </script>
+<%- include("../static/footer.ejs"); %>  

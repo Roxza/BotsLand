@@ -1,0 +1,606 @@
+<%- include("static/header.ejs"); %>
+
+<div class="container px-3 px-3 mt-5 pt-5">
+    <div class="columns container px-3 is-multiline">
+        <div class="column is-2">
+            <img draggable="false" class="<% if (bot.users.cache.get(userr.id).presence.status == "online") { %> pulse-online <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "offline") { %> pulse-offline <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "dnd") { %> pulse-dnd <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "idle") { %> pulse-idle <% }; %> onerror="imgError(this);" src="https://cdn.discordapp.com/avatars/<%= userr.id %>/<%= userr.avatar %>" style="width: 300px; border-radius: 50%;">
+        </div>
+        <div class="column is-6">
+            <p class="UserName is-size-2 has-text-white"><%= userr.username %> <i class="status2 fad fa-circle  <% if (bot.users.cache.get(userr.id).presence.status == "online") { %> has-text-success <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "offline") { %> has-text-dark <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "dnd") { %> has-text-danger <% }; %> <% if (bot.users.cache.get(userr.id).presence.status == "idle") { %> has-text-warning <% }; %>"></i></p>   
+            <%
+            if (member) {
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("792040650529832980")) {
+                    %> <i class="fad fa-crown has-text-warning tippy mr-2" data-tippy-content="Administrator" style="font-size: 22px; position: relative; top: -5px;"></i> <%
+                }
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("798252236571934760")) {
+                    %> <i class="fad fa-brackets-curly has-text-success tippy mr-2" data-tippy-content="Website Developer" style="font-size: 22px; position: relative; top: -5px;"></i> <%
+                 }
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("794265637312397342")) {
+                   %> <i class="fad fa-gavel has-text-danger tippy mr-2" data-tippy-content="Moderator" style="font-size: 22px; position: relative; top: -5px;"></i> <%
+                }
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("794266641366122556")) {
+                   %> <i class="fad fa-badge-check has-text-info tippy mr-2" data-tippy-content="Certified Developer" style="font-size: 22px; position: relative; top: -5px;"></i> <%
+                }
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("801411074586443796")) {
+                    %><i class="fad fa-diamond tippy mr-2" data-tippy-content="Premium" style="color: plum;font-size: 22px; position: relative; top: -5px;"></i><%
+                }
+                if (bot.guilds.cache.get("785468934844973056").members.cache.get(userr.id).roles.cache.get("798299223916544050")) {
+                    %><i class="fad fa-virus-slash tippy mr-2" data-tippy-content="Bots.land Bug Hunter" style="color: lightskyblue;font-size: 22px; position: relative; top: -5px;"></i><%
+                }
+            }
+            
+            
+            userFlags.forEach(flag =>{
+
+                if (flag === "HOUSE_BALANCE") { %>
+                    <img draggable="false" src="https://discord.com/assets/9fdc63ef8a3cc1617c7586286c34e4f1.svg" class="tippy mr-1" data-tippy-content="HypeSquad Balance" width="25px">
+               <% }
+
+               if (flag === "HOUSE_BRILLIANCE") { %>
+                    <img draggable="false" src="https://ptb.discord.com/assets/48cf0556d93901c8cb16317be2436523.svg" class="tippy mr-1" data-tippy-content="HypeSquad Brilliance" width="25px">
+               <% }
+
+               if (flag === "HOUSE_BRAVERY") { %>
+                <img draggable="false" src="https://canary.discord.com/assets/64ae1208b6aefc0a0c3681e6be36f0ff.svg" class="tippy mr-1" data-tippy-content="HypeSquad Bravery" width="25px">
+           <% }
+               
+               if (flag === "VERIFIED_DEVELOPER") { %>
+                <img draggable="false" src="https://discord.com/assets/45cd06af582dcd3c6b79370b4e3630de.svg" class="tippy mr-1" data-tippy-content="Early Verified Developer" width="28px">
+               <% }
+               
+               if (flag === "EARLY_SUPPORTER") { %>
+                <img draggable="false" src="https://discord.com/assets/23e59d799436a73c024819f84ea0b627.svg" class="tippy" data-tippy-content="Early Supporter" width="32px">
+               <% }
+
+            })
+            if (db.get(`users.${userr.id}`).premium_type == 1) { %>
+                <img draggable="false" src="https://discord.com/assets/386884eecd36164487505ddfbac35a9d.svg" class="tippy mr-1" data-tippy-content="Nitro Classic Subscriber" width="32px">
+               <% }
+               if (db.get(`users.${userr.id}`).premium_type == 2) { %>
+                <img draggable="false" src="https://discord.com/assets/386884eecd36164487505ddfbac35a9d.svg" class="tippy mr-1" data-tippy-content="Nitro Subscriber" width="27.8px">
+                <img draggable="false" src="https://canary.discord.com/assets/fbb6f1e160280f0e9aeb5d7c452eefe1.svg" class="tippy mr-1" data-tippy-content="Nitro Subscriber" width="28">
+               <% }
+            %>
+            %>
+            <p class="UserDesc mt-1"><% if (db.get(`users.${userr.id}`).bio == null) { %> A mysterious profile! <% } else { %> <%= db.get(`users.${userr.id}`).bio %> <% } %></p>
+            <% if (user) { if (user.id === userid) { %> 
+                <a href="javascript:;" id="openModal" class="mt-4 button is-success"><i class="fad fa-edit mr-2"></i> Edit Bio</a>    
+                <a href="javascript:;" id="openModal2" class="mt-4 button is-info"><i class="fad fa-edit mr-2"></i> Edit Links</a>    
+            <% } } %>
+        </div>
+        <div class="is-4 mt-5 column">
+            <%
+             if (member) {
+                let activity = member.presence.activities[0]
+                /*if (member.presence.activities.filter(d => d.name !== "Custom Status").length > 0) {
+                activity = member.presence.activities[1];
+                } 
+                if (member.presence.activities.filter(d => d.name !== "Custom Status").length  == 0) {
+                 activity = member.presence.activities[0];
+                }*/
+            %>
+            <%
+            if (activity) {
+            if (activity.name == "Spotify") {%>
+            <div class="box ml-5 activityBox has-text-white" style="background: #1cb050;">
+                <div class="is-flex mt-2">
+                <div class="activityImg">
+                        <img draggable="false" src="https://i.scdn.co/image/<%= activity.assets.largeImage.split(':')[1];%>" alt="Spotify">
+                </div>
+                <div class="activityTexts ml-4">
+                    <p class="is-size-4 one-line"><%= activity.details %></p>
+                    <p class="is-size-6 one-line">by <%= activity.state %></p>
+                    <p class="is-size-6 one-line">on <%= activity.assets.largeText %></p>
+                </div>
+            </div>
+            </div>
+            <% } else if (activity.name == "Custom Status")  { %>
+                
+                <div class="box ml-5 activityBox has-text-white bg-dark">
+                    <div class="is-flex">
+                    <div class="activityImg">
+                        <img draggable="false" src="/assets/img/custom-status.png" alt="Custom Status">
+                    </div>
+                    <div class="activityTexts ml-4">
+                        <p class="is-size-4 one-line"><%= activity.name %></p>
+                        <p class="is-size-6 three-line tippy" data-tippy-content="<%= activity.state ? String(activity.state).substring(0, 30) : "Unknown"; %>"><%= activity.state ? String(activity.state).substring(0, 30) : "Unknown"; %></p>
+                    </div>
+                </div>
+                </div>
+                
+            <%} else { 
+                if (activity.assets && activity.state) {
+%>
+<div class="box ml-5 activityBox has-text-white bg-dark">
+    <div class="is-flex">
+    <div class="activityImg">
+        <img draggable="false" src="https://cdn.discordapp.com/app-assets/<%= activity.applicationID; %>/<%= activity.assets.largeImage; %>">
+    </div>
+    <div class="activityTexts ml-4">
+        <p class="is-size-4 one-line"><%= activity.name %></p>
+        <p class="is-size-6 one-line"><%= activity.details.substring(0, 30); %></p>
+        <p class="is-size-6 one-line"><%= String(activity.assets.largeText).substring(0, 30); %></p>
+    </div>
+</div>
+</div>
+<%
+                }
+                %>
+                
+            <%}}
+             } %>
+        </div>
+    </div>
+    <div class="hr mb-5"></div>
+    <div class="columns is-multiline">
+        <div class="column is-3">
+            <b class="has-text-white"><i class="fad fa-question-circle"></i> Information</b>
+            <div class="is-flex mt-4">
+                <div class="box-2-p"><i class="fad fa-robot"></i></div>
+                <p class="box-2">Bots: <%= Object.values(db.get(`bots`) || {}).filter(b => b.owner == userr.id && b.status > 0).length + Object.values(db.get(`bots`)).filter(b => b.owners.includes(userr.id) && b.status > 0).length; %> </p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="fad fa-vote-yea"></i></div>
+                <p class="box-2">Votes: 
+                    
+                    <%
+                    let total = 0;
+                   /*for (let i = 0; i < Object.values(db.get(`bots`)).filter(b => b.owner == userr.id || b.owners.includes(userr.id)).length; i++) {
+                        if (Object.values(db.get(`bots`)).filter(b => b.owner == userr.id)[0]) {
+                        total += total + Number(Object.values(db.get(`bots`)).filter(b => b.owner == userr.id)[0].votes) || 0;
+                        }
+                    }*/
+
+                    Object.values(db.get(`bots`)).filter(d => d.owner === userr.id).forEach(data => {
+                        total = total + Number(data.votes)
+                    })
+
+                    Object.values(db.get(`bots`)).filter(d => d.owners.includes(userr.id)).forEach(data => {
+                        total = total + Number(data.votes)
+                    })
+                    %>
+                    <%= total; %>
+
+                </p>
+            </div>
+            <div class="is-flex mt-2">
+                <div class="box-2-p"><i class="fad fa-calendar"></i></div>
+                <p class="box-2">Last Login: <%= db.get(`users.${userr.id}`).lastLogin; %></p>
+            </div>
+
+            <br>
+            <b class="has-text-white"><i class="fad fa-link"></i> Links</b>
+            <br>
+                <!-- <a class="mt-3" rel="nofollow noreferer" target="_blank" href="">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix"><span class="fa fa-exclamation-circle is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>Coming soon!</span></div></p></div>
+                </a> -->
+            <% if (db.get(`users.${userr.id}.links`) == null) { %>
+                <a class="mt-3" rel="nofollow noreferer" href="#!">
+                        <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix"><span class="fa fa-exclamation-circle is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>No Links.</span></div></p></div>
+                </a>
+            <% } %>
+            <% if (db.get(`users.${userr.id}.links.website`)) { %>
+                <a class="mt-3" rel="nofollow noreferer" target="_blank" href="<%= db.get(`users.${userr.id}.links.website`) %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix" style="color: #19b54b;"><span class="fa fa-globe is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>Website</span></div></p></div>
+                </a>
+            <% } %>
+            <% if (db.get(`users.${userr.id}.links.github`)) { %>
+                <a class="mt-3" rel="nofollow noreferer" target="_blank" href="https://github.com/<%= db.get(`users.${userr.id}.links.github`) %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix"><span class="fab fa-github is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>GitHub</span></div></p></div>
+                </a>
+            <% } %>
+            <% if (db.get(`users.${userr.id}.links.twitter`)) { %>
+                <a class="mt-3" rel="nofollow noreferer" target="_blank" href="https://twitter.com/<%= db.get(`users.${userr.id}.links.twitter`) %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix" style="color: #00b6f1;"><span class="fab fa-twitter is-size-6 mt-1"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>Twitter</span></div></p></div>
+                </a>
+            <% } %>
+            <% if (db.get(`users.${userr.id}.links.instagram`)) { %>
+                <a class="mt-3" rel="nofollow noreferer" target="_blank" href="https://instagram.com/<%= db.get(`users.${userr.id}.links.instagram`) %>">
+                    <div class="field has-addons mt-3"><p class="control"><div class="box-2-p websitebtn-prefix"><span class="fab fa-instagram is-size-6 mt-1" style="  color: transparent;background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);background: -webkit-radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);background-clip: text;-webkit-background-clip: text"></span></div></p><p class="control"><div class="box-2 websitebtn"><span>Instagram</span></div></p></div>
+                </a>
+            <% } %>
+
+
+        </div>
+        <div class="column is-9">
+        
+
+
+            <div class="columns is-multiline is-desktop mt-2 is-variable is-7">
+        
+      <%
+      if (userBotsData.length > 0) {
+        for(let i = 0; i < userBotsData.length; i++) {
+        if (i === 8) break;
+        let userbots = userBotsData[i];
+      %>      
+
+        <div class="column is-4 mb-5">          
+            <div class="box botCard bg-dark">
+              <div>
+                <div class="is-inline-block">
+                <span class="tag is-dark mt-1 w-100">Votes: <%= userbots.votes %></span>
+                  <br>
+                <span class="tag is-dark mt-1 w-100">Invites: <%= userbots.invites %></span>
+                </div>
+                <img draggable="false" onerror="imgError(this);" alt="<%= userbots.username %> Bot" src="https://cdn.discordapp.com/avatars/<%= userbots.id %>/<%= userbots.avatar %>.webp?size=256" class="is-pulled-right	cardBotImg z">
+              </div>
+              <p class="cardBotName has-text-white mt-5"><%= userbots.username %> <%if (bot.guilds.cache.get("785468934844973056").members.cache.get(userbots.id)){ if (bot.guilds.cache.get("785468934844973056").members.cache.get(userbots.id).roles.cache.get("794266963282886686")) {%><span data-tippy-content="Certified" class="tippy has-text-info has-text-centered"><i class="fad fa-badge-check"></i></span><%}}%></p>   
+              <p class="cardBotDesc mt-1"><%= userbots.shortDescription.substring(0, 200) %></p>
+              <div class="cardButtons is-flex">
+                  <a href="/bot/<%= userbots.id %>" class="cardBtn1"><i class="fad fa-eye"></i>&nbsp;View</a>
+                  <a href="/bot/<%= userbots.id %>/invite" class="cardBtn2"><i class="fad fa-user-plus"></i>&nbsp;Invite</a>
+              </div>
+            </div>
+        </div>        
+        <% } } else { %>
+            <article class="message is-danger ml-5 w-100">
+                <div class="message-body">
+                  <h3><b><i class="fad fa-robot" aria-hidden="true"></i> Bip bop, Bop bip?</b></h3>
+                  <div id="errorDetails">This user has not added any bots.</div>
+                </div>
+            </article>
+        <% } %>
+      </div>
+
+
+
+        </div>
+    </div>
+</div>
+  <div id="modal" class="modal profile-edit">
+    <div class="modal-background"></div>
+        <div class="modal-content">
+            <textarea id="bio" rows="4" placeholder="Your profile bio." class="form-input"></textarea>
+            <button class="button is-success mt-4" style="float:right;" id="save-profile">Save</button>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal2" class="modal profile-edit2">
+        <div class="modal-background"></div>
+            <div class="modal-content">
+                <div>
+                    <b class="has-text-white"><i class="fad fa-globe"></i>&nbsp;Website</b>
+                    <p class="has-text-white" style="opacity: 0.6;">Personal Website url.</p>
+                </div>
+                <input type="text" id="personalweb" class="mt-3 form-input" placeholder="Personal Website url. https:// or http:// is needed.">
+                <br />
+                <br />
+                <div>
+                    <b class="has-text-white"><i class="fab fa-github"></i>&nbsp;GitHub</b>
+                    <p class="has-text-white" style="opacity: 0.6;">GitHub account username.</p>
+                </div>
+                <input type="text" id="githubweb" class="mt-3 form-input" placeholder="GitHub acccount username. No link just username.">
+                <br />
+                <br />
+                <div>
+                    <b class="has-text-white"><i class="fab fa-twitter" style="color: #00b6f1;"></i>&nbsp;Twitter</b>
+                    <p class="has-text-white" style="opacity: 0.6;">Twitter account username.</p>
+                </div>
+                <input type="text" id="twitterweb" class="mt-3 form-input" placeholder="Twitter acccount username. No link just username.">
+                <br />
+                <br />
+                <div>
+                    <b class="has-text-white"><i class="fab fa-instagram" style="  color: transparent;background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);background: -webkit-radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);background-clip: text;-webkit-background-clip: text"></i>&nbsp;Instagram</b>
+                    <p class="has-text-white" style="opacity: 0.6;">Instagram account username.</p>
+                </div>
+                <input type="text" id="instagramweb" class="mt-3 form-input" placeholder="Instagram acccount username. No link just username.">
+                <button class="button is-success mt-4" style="float:right;" id="profile-save"><i class="fad fa-save"></i>&nbsp;Save</button>
+                <button class="button is-danger mt-4" style="float:left;" id="links-remove"><i class="fad fa-trash-alt"></i>&nbsp;Remove</button>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    $("#profile-save").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/api/user-editlinks",
+            data: {id: "<%=userr.id%>", personalweb: $("#personalweb").val(), githubweb: $("#githubweb").val(), twitterweb: $("#twitterweb").val(), instagramweb: $("#instagramweb").val()},
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    Swal.fire("Great!", response.message, "success")
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                }
+                if (response.status == false) {
+                    Swal.fire("Oops!", response.message, "error")
+                }
+            }
+        });
+    });
+    $("#links-remove").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/api/user-removeLinks",
+            data: {id: "<%=userr.id%>", personalweb: $("#personalweb").val(), githubweb: $("#githubweb").val(), twitterweb: $("#twitterweb").val(), instagramweb: $("#instagramweb").val()},
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    Swal.fire("Great!", response.message, "success")
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                }
+                if (response.status == false) {
+                    Swal.fire("Oops!", response.message, "error")
+                }
+            }
+        });
+    });
+    $("#openModal").click(function (e) { 
+        $(".profile-edit").addClass("is-active");
+    });
+    $(".modal-close").click(function (e) { 
+        $(".modal").removeClass("is-active");   
+    });
+    $("#openModal2").click(function (e) { 
+        $(".profile-edit2").addClass("is-active");
+    });
+    $(".modal-close2").click(function (e) { 
+        $(".modal").removeClass("is-active");   
+    });
+
+    $("#save-profile").click(function () {
+        $.ajax({
+            // this is for the bio edit. the links edit is above
+            type: "POST",
+            url: "/api/user-edit",
+            data: {id: "<%=userr.id%>", data: $("#bio").val()},
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    Swal.fire("Great!", response.message, "success")
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                }
+                if (response.status == false) {
+                    Swal.fire("Oops!", response.message, "error")
+                }
+            }
+        });
+    });
+  </script>
+<%- include("static/footer.ejs"); %>
+<style>
+    @keyframes wavesup {
+        0% {
+            d: path(
+                    "M0,32L30,53.3C60,75,120,117,180,117.3C240,117,300,75,360,48C420,21,480,11,540,37.3C600,64,660,128,720,149.3C780,171,840,149,900,122.7C960,96,1020,64,1080,74.7C1140,85,1200,139,1260,170.7C1320,203,1380,213,1410,218.7L1440,224L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+            );
+        }
+        50% {
+            d: path(
+                    "M0,224L30,229.3C60,235,120,245,180,250.7C240,256,300,256,360,218.7C420,181,480,107,540,90.7C600,75,660,117,720,112C780,107,840,53,900,64C960,75,1020,149,1080,160C1140,171,1200,117,1260,96C1320,75,1380,85,1410,90.7L1440,96L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+            );
+        }
+        to {
+            d: path(
+                    "M0,32L30,53.3C60,75,120,117,180,117.3C240,117,300,75,360,48C420,21,480,11,540,37.3C600,64,660,128,720,149.3C780,171,840,149,900,122.7C960,96,1020,64,1080,74.7C1140,85,1200,139,1260,170.7C1320,203,1380,213,1410,218.7L1440,224L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+            );
+        }
+    }
+    @keyframes wavesdown {
+        0% {
+            d: path(
+                    "M0,224L30,186.7C60,149,120,75,180,48C240,21,300,43,360,69.3C420,96,480,128,540,122.7C600,117,660,75,720,53.3C780,32,840,32,900,64C960,96,1020,160,1080,165.3C1140,171,1200,117,1260,90.7C1320,64,1380,64,1410,64L1440,64L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"
+            );
+        }
+        50% {
+            d: path(
+                    "M0,96L30,90.7C60,85,120,75,180,85.3C240,96,300,128,360,117.3C420,107,480,53,540,42.7C600,32,660,64,720,69.3C780,75,840,53,900,58.7C960,64,1020,96,1080,90.7C1140,85,1200,43,1260,26.7C1320,11,1380,21,1410,26.7L1440,32L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"
+            );
+        }
+        to {
+            d: path(
+                    "M0,224L30,186.7C60,149,120,75,180,48C240,21,300,43,360,69.3C420,96,480,128,540,122.7C600,117,660,75,720,53.3C780,32,840,32,900,64C960,96,1020,160,1080,165.3C1140,171,1200,117,1260,90.7C1320,64,1380,64,1410,64L1440,64L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"
+            );
+        }
+    }
+    @keyframes pulse-black {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    
+    @keyframes pulse-dnd {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 #f14668;
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    
+    @keyframes pulse-online {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 #48c774;
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+
+    @keyframes pulse-idle {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 #ffdd57;
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+
+    @keyframes pulse-offline {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 #363636;
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+
+    @keyframes pulse-white {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    @keyframes pulse-purple {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(115, 139, 215, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    @keyframes pulse-skyblue {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(59, 156, 238, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    @keyframes pulse-rainbow {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(240, 70, 70, 0.7);
+        }
+        25% {
+            transform: scale(0.96.5);
+            box-shadow: 0 0 0 20px rgba(70, 240, 78, 0.65);
+        }
+        50% {
+            transform: scale(0.98);
+            box-shadow: 0 0 0 0 rgba(70, 132, 240, 0.35);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px transparent;
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 transparent;
+        }
+    }
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(1vw);
+        }
+    }
+    @keyframes glow {
+        0% {
+            box-shadow: 0 0 5px 0 rgba(203, 189, 255, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 25px 0 rgba(203, 189, 255, 0.5);
+        }
+        100% {
+            box-shadow: 0 0 5px 0 rgba(203, 189, 255, 0.2);
+        }
+    }
+    @keyframes bgGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .pulse-white {
+      animation: pulse-white 2s infinite;
+    }
+    .pulse-black {
+      animation: pulse-black 2s infinite;
+    }
+    .pulse-purple {
+      animation: pulse-purple 2s infinite;
+    }
+    .pulse-skyblue {
+      animation: pulse-skyblue 2s infinite;
+    }
+    .pulse-rainbow {
+      animation: pulse-rainbow 2s infinite;
+    }
+    
+    .pulse-dnd {
+      animation: pulse-dnd 2s infinite;
+    }
+
+    .pulse-online {
+      animation: pulse-online 2s infinite;
+    }
+    
+    .pulse-idle {
+        animation: pulse-idle 2s infinite;
+    }
+
+    .pulse-offline {
+        animation: pulse-offline 2s infinite;
+    }
+    
+            </style>
