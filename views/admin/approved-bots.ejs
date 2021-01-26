@@ -1,0 +1,109 @@
+<%- include('static/header'); %>
+
+<div class="row mt-5 mb-5">
+    <div class="col-lg-12">
+    <div class="card">
+     <div class="card-header text-uppercase">APPROVED BOTS</div>
+      <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">#</th>
+                   <th scope="col">Bot Name</th>
+                   <th scope="col">Owner</th>
+                   <th scope="col">INVITE</th>
+                   <th scope="col">Decline</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <%
+                 let botscount = Object.values(db.get(`bots`)).filter(b => b.status > 0 || b.status > 1).sort(function (a,b) { return b.date - a.date });
+                 for (let i = (page - 1) * 40; i < botscount.length; i++) {
+                  if (i === 40 * page) break;
+                  let botdata = botscount[i];
+                 %>
+                 <tr id="<%=botdata.id%>">
+                    <th scope="row"><%=i + 1%></th>
+                    <td><a href="/bot/<%= botdata.id %>" target="_blank"><%= botdata.username %>#<%= botdata.discriminator %> <%if (bot.guilds.cache.get("785468934844973056").members.cache.get(botdata.id)) { if (bot.guilds.cache.get("785468934844973056").members.cache.get(botdata.id).roles.cache.get("794266963282886686")) {%><span data-tippy-content="Certified" class="tippy has-text-info has-text-centered"><i class="fad fa-badge-check"></i></span><%}}%></a></td>
+                    <td><%= db.get(`users.${botdata.owner}.username`); %>#<%= db.get(`users.${botdata.owner}.discriminator`); %></td>
+                    <td>
+                         <div class="btn-group m-1" role="group">
+                         <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                           Invite
+                         </button>
+                         <div class="dropdown-menu" style="position: absolute; transform: translate3d(0px, 40px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-start">
+                           <a href="https://discord.com/oauth2/authorize?client_id=<%= botdata.id %>&guild_id=795023489035272213&scope=bot&permissions=8" target="_blank" class="dropdown-item">Test Server</a>
+                           <a href="https://discord.com/oauth2/authorize?client_id=<%= botdata.id %>&guild_id=785468934844973056&scope=bot&permissions=0" target="_blank" class="dropdown-item">Main Server</a>
+                         </div>
+                         </div>
+                    </td>
+                    <td>
+                     <a class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#declineModal-<%= botdata.id %>" href="#!">Decline</a>
+                 </td>
+                  </tr>
+                  <div class="modal fade" id="declineModal-<%= botdata.id %>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-danger">
+                      <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-white"><i class="fad fa-trash"></i> Decline Bot</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h5>Reason: (Only English)</h5>
+                        <input type="text" class="form-control" id="input-<%= botdata.id %>" placehloder="Enter a reason.">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-inverse-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="decline('<%= botdata.id %>');"><i class="fa fa-trash"></i> Decline</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 <% } %>
+               </tbody>
+             </table>
+         </div>
+      </div>
+    </div>
+   </div>
+   <ul class="pagination pagination-round mx-auto">
+    <%
+      if (page != 1) {
+      %>
+    <li class="page-item"><a class="page-link" href="/admin/approved-bots?page=<%= page-1; %>"><i class="fa fa-chevron-left"></i></a></li>
+    <% }
+    if (page != Math.ceil(Object.values(db.get("bots")).filter(b => b.status > 0).length / 8) && Object.values(db.get("bots")).filter(b => b.status > 0).length > 0) {
+    %>
+    <li class="page-item"><a class="page-link" href="/admin/approved-bots?page=<%= Number(page)+ Number(1); %>"><i class="fa fa-chevron-right"></i></a></li>
+    <% } %>
+  </ul>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script>
+      function decline(id) {  
+        $.ajax({
+          type: "POST",
+          url: "/admin/posts/decline",
+          data: {id: id, reason: $("#input-"+id).val(), action: "kick"},
+          dataType: "json",
+          success: function (response) {
+            if (response.status === true) {
+              Swal.fire("Great!", "You have successfully declined this bot!", "success");
+              $("#"+id).remove();
+              $("#declineModal-"+id).remove();
+              $(".modal-backdrop").remove();
+            }
+            if (response.status === false) {
+              Swal.fire("Oops!", response.message, "error");
+            }
+          }
+        });
+      }
+  </script>
+		  
+<%- include('static/footer'); %>
