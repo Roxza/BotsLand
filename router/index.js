@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const db = require('quick.db');
+const db = require('quick.db');;
 const client = require('../bot');
 
 console.log("[Loading] : Index router loading...");
