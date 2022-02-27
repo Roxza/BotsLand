@@ -43,6 +43,6 @@ client.on("message", async message => {
     }
   });
 
-client.login("Nzc4OTYwMjI0MDAxNTg5MzA5.X7ZlPQ.rIYOkT2-Hh1L-6qKrgtXQarcAmU")
+client.login("")
 
 module.exports = client;
